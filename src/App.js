@@ -13,10 +13,11 @@ class App extends React.Component {
       cardAttr2: '0',
       cardAttr3: '0',
       cardImage: '',
-      cardRare: '',
+      cardRare: 'normal',
       cardTrunfo: false,
       hasTrunfo: false,
       isSaveButtonDisabled: true,
+      newCard: [],
     };
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -60,12 +61,56 @@ class App extends React.Component {
         && numThree <= maxUnique && numThree >= min) {
         this.setState({
           isSaveButtonDisabled: false,
+
+          // fiz o requisito 5 ao ver uma solução parcial em um grupo de estudos.
         });
       }
     });
   }
 
-  onSaveButtonClick() {
+  onSaveButtonClick(event) {
+    event.preventDefault();
+
+    const { cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardRare,
+      cardTrunfo,
+    } = this.state;
+
+    const card = {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardRare,
+      cardTrunfo,
+      hasTrunfo: cardTrunfo,
+    };
+
+    this.setState((estadoAnterior) => ({
+      newCard: [...estadoAnterior.newCard, card],
+
+      cardName: '',
+      cardDescription: '',
+      cardAttr1: '0',
+      cardAttr2: '0',
+      cardAttr3: '0',
+      cardImage: '',
+      cardRare: 'normal',
+      cardTrunfo: false,
+      isSaveButtonDisabled: true,
+    }), () => {
+      const { newCard } = this.state;
+      this.setState({
+        hasTrunfo: newCard.some((element) => element.hasTrunfo),
+      });
+    });
   }
 
   render() {
@@ -95,6 +140,7 @@ class App extends React.Component {
           cardTrunfo={ cardTrunfo }
           hasTrunfo={ hasTrunfo }
           isSaveButtonDisabled={ isSaveButtonDisabled }
+          onSaveButtonClick={ this.onSaveButtonClick }
         />
         <Card
           cardName={ cardName }
