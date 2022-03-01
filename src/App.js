@@ -113,6 +113,21 @@ class App extends React.Component {
     });
   }
 
+  deleteCard(element) {
+    const { newCard, hasTrunfo } = this.state;
+
+    const igualDelete = newCard.filter((deleteItem) => element.cardName
+    !== deleteItem.cardName);
+
+    if (hasTrunfo === true) {
+      this.setState({ hasTrunfo: false });
+    }
+
+    this.setState({
+      newCard: igualDelete,
+    });
+  }
+
   render() {
     const { cardName,
       cardDescription,
@@ -123,6 +138,7 @@ class App extends React.Component {
       cardRare,
       cardTrunfo,
       hasTrunfo,
+      newCard,
       isSaveButtonDisabled } = this.state;
 
     return (
@@ -152,6 +168,32 @@ class App extends React.Component {
           cardRare={ cardRare }
           cardTrunfo={ cardTrunfo }
         />
+
+        <div>
+          { newCard.map((element, index) => (
+            <div key={ index + element.cardName }>
+              <Card
+                cardName={ element.cardName }
+                cardDescription={ element.cardDescription }
+                cardAttr1={ element.cardAttr1 }
+                cardAttr2={ element.cardAttr2 }
+                cardAttr3={ element.cardAttr3 }
+                cardImage={ element.cardImage }
+                cardRare={ element.cardRare }
+                cardTrunfo={ element.cardTrunfo }
+              />
+
+              <button
+                type="button"
+                data-testid="delete-button"
+                onClick={ () => this.deleteCard(element) }
+              >
+                Excluir
+
+              </button>
+            </div>
+          )) }
+        </div>
       </div>
     );
   }
