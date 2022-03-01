@@ -51,11 +51,7 @@ class Card extends React.Component {
           {' '}
         </h2>
 
-        <h1 data-testid="trunfo-card">
-          {' '}
-          { cardTrunfo ? 'Super Trunfo' : '' }
-          {' '}
-        </h1>
+        { cardTrunfo && <h1 data-testid="trunfo-card">Super Trunfo</h1> }
       </div>
     );
   }
